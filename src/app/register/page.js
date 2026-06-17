@@ -14,6 +14,8 @@ function RegisterForm() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState('STUDENT');
+  const [matricNo, setMatricNo] = useState('');
+  const [staffId, setStaffId] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -28,7 +30,7 @@ function RegisterForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password, role }),
+        body: JSON.stringify({ name, email, password, role, matricNo, staffId }),
       });
 
       const data = await res.json();
@@ -163,6 +165,38 @@ function RegisterForm() {
             </div>
           </div>
         </div>
+
+        {role === 'STUDENT' ? (
+          <div>
+            <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2" htmlFor="matricNo">
+              Matriculation Number
+            </label>
+            <input
+              id="matricNo"
+              type="text"
+              required
+              className="w-full px-4 py-3 rounded border border-zinc-900 bg-black text-white focus:outline-none focus:border-white transition text-xs"
+              placeholder="e.g. 2018/12345"
+              value={matricNo}
+              onChange={(e) => setMatricNo(e.target.value)}
+            />
+          </div>
+        ) : (
+          <div>
+            <label className="block text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2" htmlFor="staffId">
+              Staff ID
+            </label>
+            <input
+              id="staffId"
+              type="text"
+              required
+              className="w-full px-4 py-3 rounded border border-zinc-900 bg-black text-white focus:outline-none focus:border-white transition text-xs"
+              placeholder="e.g. L-5678"
+              value={staffId}
+              onChange={(e) => setStaffId(e.target.value)}
+            />
+          </div>
+        )}
 
         <button
           type="submit"

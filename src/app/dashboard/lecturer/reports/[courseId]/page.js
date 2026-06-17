@@ -37,7 +37,7 @@ export default async function LecturerCourseReportPage({ params }) {
     .populate({
       path: "studentId",
       model: User,
-      select: "name email",
+      select: "name email matricNo",
     })
     .sort({ markedAt: -1 });
 
@@ -134,6 +134,7 @@ export default async function LecturerCourseReportPage({ params }) {
                 <thead>
                   <tr className="border-b border-zinc-200 dark:border-zinc-800 text-zinc-400 font-semibold">
                     <th className="pb-3 pr-4">Student Name</th>
+                    <th className="pb-3 px-4">Matric Number</th>
                     <th className="pb-3 px-4">Student Email</th>
                     <th className="pb-3 pl-4">Date & Time Marked</th>
                   </tr>
@@ -144,8 +145,11 @@ export default async function LecturerCourseReportPage({ params }) {
                       key={record._id.toString()}
                       className="text-zinc-800 dark:text-zinc-200"
                     >
-                      <td className="py-4 pr-4 font-semibold text-zinc-950 dark:text-white">
+                      <td className="py-4 pr-4 font-semibold text-zinc-955 dark:text-white">
                         {record.studentId?.name || "Unknown Student"}
+                      </td>
+                      <td className="py-4 px-4 font-mono text-xs text-zinc-900 dark:text-zinc-100">
+                        {record.studentId?.matricNo || "N/A"}
                       </td>
                       <td className="py-4 px-4 font-medium text-zinc-500 dark:text-zinc-400">
                         {record.studentId?.email || "N/A"}

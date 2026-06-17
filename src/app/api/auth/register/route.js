@@ -8,7 +8,7 @@ import User from '@/models/User';
 export async function POST(request) {
   try {
     await dbConnect();
-    const { name, email, password, role } = await request.json();
+    const { name, email, password, role, matricNo, staffId } = await request.json();
 
     if (!name || !email || !password || !role) {
       return NextResponse.json(
@@ -20,6 +20,20 @@ export async function POST(request) {
     if (role !== 'LECTURER' && role !== 'STUDENT') {
       return NextResponse.json(
         { error: 'Role must be either LECTURER or STUDENT' },
+        { status: 400 }
+      );
+    }
+
+    if (role === 'STUDENT' && !matricNo) {
+      return NextResponse.json(
+        { error: 'Matriculation Number is required for students' },
+        { status: 400 }
+      );
+    }
+
+    if (role === 'LECTURER' && !staffId) {
+      return NextResponse.json(
+        { error: 'Staff ID is required for lecturers' },
         { status: 400 }
       );
     }
@@ -47,6 +61,24 @@ export async function POST(request) {
       );
     }
 
+    if (role === 'STUDENT') {
+      const existingMatric = await User.findOne({ matricNo: matricNo.trim() });
+      if (existingMatric) {
+        return NextResponse.json(
+          { error: 'Student with this Matriculation Number already exists' },
+          { status: 409 }
+        );
+      }
+    } else if (role === 'LECTURER') {
+      const existingStaff = await User.findOne({ staffId: staffId.trim() });
+      if (existingStaff) {
+        return NextResponse.json(
+          { error: 'Lecturer with this Staff ID already exists' },
+          { status: 409 }
+        );
+      }
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
@@ -54,10 +86,12 @@ export async function POST(request) {
       email: email.toLowerCase(),
       password: hashedPassword,
       role,
+      matricNo: role === 'STUDENT' ? matricNo.trim() : undefined,
+      staffId: role === 'LECTURER' ? staffId.trim() : undefined,
     });
 
     const token = jwt.sign(
-      { id: user._id, name: user.name, email: user.email, role: user.role },
+      { id: user._id, name: user.name, email: user.email, role: user.role, matricNo: user.matricNo, staffId: user.staffId },
       process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export function LecturerNavbar({ userName }) {
+export function LecturerNavbar({ userName, staffId }) {
   const router = useRouter();
   const [loggingOut, setLoggingOut] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -38,11 +38,13 @@ export function LecturerNavbar({ userName }) {
             </span>
           </div>
           <div className="flex items-center gap-4">
-            <div className="hidden sm:flex flex-col items-end text-sm">
-              <span className="font-medium text-zinc-800 dark:text-zinc-200">
+            <div className="hidden sm:flex flex-col items-end text-xs font-semibold">
+              <span className="font-bold text-zinc-850 dark:text-zinc-100">
                 {userName}
               </span>
-              <span className="text-xs text-zinc-400">Lecturer Account</span>
+              <span className="text-[10px] text-zinc-450 font-mono mt-0.5">
+                Staff ID: {staffId || "N/A"}
+              </span>
             </div>
             <button
               onClick={() => setShowLogoutModal(true)}

@@ -4,11 +4,12 @@ export function ExportButton({ records, courseName }) {
   const handleExport = () => {
     if (!records || records.length === 0) return;
 
-    const headers = ["Student Name", "Student Email", "Marked Date", "Marked Time"];
+    const headers = ["Student Name", "Matric Number", "Student Email", "Marked Date", "Marked Time"];
     const rows = records.map((record) => {
       const dateObj = new Date(record.markedAt);
       return [
         record.studentId?.name || "Unknown Student",
+        record.studentId?.matricNo || "N/A",
         record.studentId?.email || "N/A",
         dateObj.toLocaleDateString(),
         dateObj.toLocaleTimeString(),

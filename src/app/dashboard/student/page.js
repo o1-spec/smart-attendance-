@@ -73,9 +73,11 @@ export default async function StudentDashboardPage() {
             <h3 className="text-xl font-bold text-zinc-900 dark:text-white">
               {user.name}
             </h3>
-            <p className="text-sm text-zinc-500 mt-0.5">
-              {user.email}
-            </p>
+            <div className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 text-xs font-semibold text-zinc-500">
+              <span>{user.email}</span>
+              <span className="text-zinc-300 dark:text-zinc-700">•</span>
+              <span className="font-mono text-zinc-700 dark:text-zinc-300">MATRIC: {user.matricNo || 'N/A'}</span>
+            </div>
           </div>
 
           <div className="rounded-2xl border border-zinc-200/40 dark:border-zinc-800/40 bg-white dark:bg-zinc-900 p-6 shadow-sm">

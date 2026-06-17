@@ -23,6 +23,18 @@ const UserSchema = new mongoose.Schema(
       enum: ['LECTURER', 'STUDENT'],
       required: [true, 'Please specify a role'],
     },
+    matricNo: {
+      type: String,
+      trim: true,
+      unique: true,
+      sparse: true,
+    },
+    staffId: {
+      type: String,
+      trim: true,
+      unique: true,
+      sparse: true,
+    },
   },
   {
     timestamps: true,
