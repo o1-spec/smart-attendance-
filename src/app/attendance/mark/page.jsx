@@ -71,10 +71,10 @@ function AttendanceMarkContent() {
 
   if (status === "loading") {
     return (
-      <div className="w-full max-w-md p-8 rounded-2xl shadow-xl border border-zinc-200/40 dark:border-zinc-800/40 bg-white dark:bg-zinc-900 text-center space-y-4">
+      <div className="w-full max-w-md p-8 rounded-2xl border border-zinc-200/40 dark:border-zinc-800/40 bg-white dark:bg-zinc-900 text-center space-y-4">
         <div className="flex justify-center">
           <svg
-            className="animate-spin h-10 w-10 text-purple-600"
+            className="animate-spin h-10 w-10 text-zinc-900 dark:text-white"
             fill="none"
             viewBox="0 0 24 24"
           >
@@ -105,8 +105,8 @@ function AttendanceMarkContent() {
 
   if (status === "error") {
     return (
-      <div className="w-full max-w-md p-8 rounded-2xl shadow-xl border border-zinc-200/40 dark:border-zinc-800/40 bg-white dark:bg-zinc-900 text-center">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 dark:bg-red-950/40 text-red-600 dark:text-red-400 mb-6">
+      <div className="w-full max-w-md p-8 rounded-2xl border border-zinc-200/40 dark:border-zinc-800/40 bg-white dark:bg-zinc-900 text-center">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-700 mb-6">
           <svg
             className="w-8 h-8"
             fill="none"
@@ -129,7 +129,7 @@ function AttendanceMarkContent() {
         </p>
         <Link
           href="/dashboard/student"
-          className="inline-flex w-full items-center justify-center py-2.5 px-4 rounded-xl text-white font-semibold bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 transition active:scale-[0.98] text-sm shadow animate-pulse"
+          className="inline-flex w-full items-center justify-center py-2.5 px-4 rounded-xl text-white font-semibold bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 transition active:scale-[0.98] text-sm shadow"
         >
           Go to Student Dashboard
         </Link>
@@ -138,8 +138,8 @@ function AttendanceMarkContent() {
   }
 
   return (
-    <div className="w-full max-w-md p-8 rounded-2xl shadow-xl border border-zinc-200/40 dark:border-zinc-800/40 bg-white dark:bg-zinc-900 text-center">
-      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 dark:bg-green-950/40 text-green-600 dark:text-green-400 mb-6">
+    <div className="w-full max-w-md p-8 rounded-2xl border border-zinc-200/40 dark:border-zinc-800/40 bg-white dark:bg-zinc-900 text-center">
+      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-700 mb-6">
         <svg
           className="w-8 h-8"
           fill="none"
@@ -190,7 +190,7 @@ function AttendanceMarkContent() {
 
       <Link
         href="/dashboard/student"
-        className="inline-flex w-full items-center justify-center py-2.5 px-4 rounded-xl text-white font-medium bg-linear-to-r from-indigo-600 to-purple-600 hover:opacity-95 transition active:scale-[0.98] text-sm shadow"
+        className="inline-flex w-full items-center justify-center py-2.5 px-4 rounded-xl text-white font-semibold bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 transition active:scale-[0.98] text-sm shadow"
       >
         Go to Student Dashboard
       </Link>
@@ -200,10 +200,7 @@ function AttendanceMarkContent() {
 
 export default function AttendanceMarkPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-linear-to-br from-indigo-50/40 via-purple-50/40 to-pink-50/40 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950">
-      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-purple-500/10 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-500/10 blur-[120px] pointer-events-none" />
-
+    <div className="min-h-screen flex items-center justify-center p-4 bg-zinc-50 dark:bg-black font-mono">
       <Suspense
         fallback={
           <div className="text-zinc-500 text-sm">Verifying parameters...</div>
