@@ -43,11 +43,11 @@ export default async function LecturerCourseReportPage({ params }) {
   const totalRecords = records.length;
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 flex flex-col">
-      <header className="sticky top-0 z-40 w-full border-b border-zinc-200/40 bg-white/85 dark:bg-zinc-950/85 backdrop-blur-xl dark:border-zinc-800/40">
+    <div className="min-h-screen bg-zinc-50 dark:bg-black flex flex-col">
+      <header className="sticky top-0 z-40 w-full border-b border-zinc-200/40 bg-white/85 dark:bg-black/85 backdrop-blur-xl dark:border-zinc-800/40">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2">
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-linear-to-tr from-indigo-500 via-purple-500 to-pink-500 text-white font-bold text-sm shadow">
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded bg-white text-black font-bold text-sm">
               QR
             </span>
             <span className="font-bold text-zinc-900 dark:text-white">
@@ -67,7 +67,7 @@ export default async function LecturerCourseReportPage({ params }) {
         <div className="mb-6">
           <Link
             href="/dashboard/lecturer"
-            className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline inline-flex items-center gap-1"
+            className="text-xs font-semibold text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:underline inline-flex items-center gap-1"
           >
             <span>← Back to Lecturer Dashboard</span>
           </Link>
@@ -75,7 +75,7 @@ export default async function LecturerCourseReportPage({ params }) {
 
         <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <span className="inline-flex items-center rounded-lg bg-indigo-50 dark:bg-indigo-950/40 px-2.5 py-1 text-xs font-semibold text-indigo-700 dark:text-indigo-400 mb-2">
+            <span className="inline-flex items-center rounded bg-zinc-100 dark:bg-zinc-900 px-2.5 py-1 text-xs font-semibold text-zinc-900 dark:text-zinc-100 mb-2 border border-zinc-200 dark:border-zinc-800">
               {course.code}
             </span>
             <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-white">
@@ -90,7 +90,7 @@ export default async function LecturerCourseReportPage({ params }) {
             <p className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-0.5">
               Total Check-ins
             </p>
-            <p className="text-2xl font-extrabold text-purple-600 dark:text-purple-400">
+            <p className="text-2xl font-extrabold text-zinc-900 dark:text-white">
               {totalRecords}
             </p>
           </div>

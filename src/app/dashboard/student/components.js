@@ -30,7 +30,7 @@ export function StudentNavbar({ userName, userEmail }) {
       <header className="sticky top-0 z-40 w-full border-b border-zinc-200/40 bg-white/85 dark:bg-zinc-950/85 backdrop-blur-xl dark:border-zinc-800/40">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2">
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-linear-to-tr from-indigo-500 via-purple-500 to-pink-500 text-white font-bold text-sm shadow">
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded bg-white text-black font-bold text-sm">
               QR
             </span>
             <span className="font-bold text-zinc-900 dark:text-white">

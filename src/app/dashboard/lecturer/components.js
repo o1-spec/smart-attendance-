@@ -31,7 +31,7 @@ export function LecturerNavbar({ userName }) {
       <header className="sticky top-0 z-40 w-full border-b border-zinc-200/40 bg-white/85 dark:bg-zinc-950/85 backdrop-blur-xl dark:border-zinc-800/40">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2">
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-linear-to-tr from-indigo-500 via-purple-500 to-pink-500 text-white font-bold text-sm shadow">
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded bg-white text-black font-bold text-sm">
               QR
             </span>
             <span className="font-bold text-zinc-900 dark:text-white">
@@ -156,7 +156,7 @@ export function CourseCreationForm() {
             id="course-title"
             type="text"
             required
-            className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-955 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/40 focus:border-purple-500 transition-all text-sm"
+            className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-white focus:outline-none focus:border-zinc-500 transition-all text-sm"
             placeholder="e.g. Advanced Software Engineering"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -174,7 +174,7 @@ export function CourseCreationForm() {
             id="course-code"
             type="text"
             required
-            className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-955 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/40 focus:border-purple-500 transition-all text-sm"
+            className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-white focus:outline-none focus:border-zinc-500 transition-all text-sm"
             placeholder="e.g. CS-401"
             value={code}
             onChange={(e) => setCode(e.target.value)}
@@ -184,9 +184,9 @@ export function CourseCreationForm() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-2.5 px-4 rounded-xl text-white font-medium bg-linear-to-r from-indigo-600 to-purple-600 hover:opacity-95 disabled:opacity-50 transition active:scale-[0.98] text-sm shadow-md"
+          className="w-full py-2.5 px-4 rounded-xl text-black font-semibold bg-white hover:bg-zinc-200 disabled:opacity-50 transition active:scale-[0.98] text-sm shadow-md"
         >
-          {loading ? "Creating..." : "Create Course"}
+          {loading ? 'Creating...' : 'Create Course'}
         </button>
       </form>
     </div>

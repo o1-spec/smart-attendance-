@@ -37,7 +37,7 @@ export default async function LecturerDashboardPage() {
   });
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-955 flex flex-col">
+    <div className="min-h-screen bg-zinc-50 dark:bg-black flex flex-col">
       <LecturerNavbar userName={user.name} />
 
       <main className="flex-1 mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -64,7 +64,7 @@ export default async function LecturerDashboardPage() {
             <p className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1">
               Active Sessions
             </p>
-            <p className="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">
+            <p className="text-3xl font-extrabold text-zinc-900 dark:text-white">
               {activeSessions}
             </p>
           </div>
@@ -73,7 +73,7 @@ export default async function LecturerDashboardPage() {
             <p className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-1">
               Total Records
             </p>
-            <p className="text-3xl font-extrabold text-purple-600 dark:text-purple-400">
+            <p className="text-3xl font-extrabold text-zinc-900 dark:text-white">
               {totalRecords}
             </p>
           </div>
@@ -95,7 +95,7 @@ export default async function LecturerDashboardPage() {
             </div>
 
             {courses.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-850 p-12 text-center bg-white dark:bg-zinc-900/40">
+              <div className="rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 p-12 text-center bg-white dark:bg-zinc-900">
                 <svg className="mx-auto h-12 w-12 text-zinc-300 dark:text-zinc-700 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                 </svg>
