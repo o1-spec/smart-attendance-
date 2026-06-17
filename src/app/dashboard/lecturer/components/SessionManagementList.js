@@ -167,22 +167,30 @@ export function SessionManagementList({ sessions }) {
               )}
             </div>
 
-            <div className="mb-6 py-2 px-4 rounded-full bg-zinc-900 border border-zinc-800 text-white text-xs font-medium inline-flex items-center gap-1.5 justify-center w-full">
-              <svg
-                className="w-4 h-4 shrink-0"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                />
-              </svg>
-              <span>QR code expires in 15 minutes</span>
-            </div>
+            {(() => {
+              const isExpired = new Date(modalSession.expiresAt) < new Date();
+              const isActive = modalSession.active && !isExpired;
+
+              return (
+                <div className={`mb-6 py-2 px-4 rounded-full border text-xs font-semibold inline-flex items-center gap-1.5 justify-center w-full ${isActive ? 'bg-zinc-900 border-zinc-800 text-white' : 'bg-zinc-950 border-zinc-850 text-zinc-500'}`}>
+                  {isActive ? (
+                    <>
+                      <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                      </svg>
+                      <span>QR code expires in 15 minutes</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-4 h-4 shrink-0 text-zinc-550" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                      </svg>
+                      <span>{modalSession.active ? "QR code has expired" : "QR code is deactivated"}</span>
+                    </>
+                  )}
+                </div>
+              );
+            })()}
 
             <div className="space-y-4 text-sm text-zinc-500">
               <div className="text-xs">

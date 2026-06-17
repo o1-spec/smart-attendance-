@@ -19,10 +19,14 @@ export function RosterTable({ records }) {
     const matchesSearch =
       name.includes(query) || email.includes(query) || matric.includes(query);
 
-    let matchesDate = false;
+    let matchesDate = true;
     if (dateFilter) {
-      const recordDate = new Date(record.markedAt).toISOString().split("T")[0];
-      matchesDate = recordDate === dateFilter;
+      const d = new Date(record.markedAt);
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      const recordLocalDate = `${year}-${month}-${day}`;
+      matchesDate = recordLocalDate === dateFilter;
     }
 
     return matchesSearch && matchesDate;
