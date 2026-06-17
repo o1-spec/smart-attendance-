@@ -1,30 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { ExportButton } from "./ExportButton";
 
-export function RosterTable({ records, showCourse = false }) {
+export function StudentHistoryTable({ records }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [dateFilter, setDateFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
   const filtered = records.filter((record) => {
-    const student = record.studentId || {};
     const course = record.courseId || {};
-    const name = (student.name || "").toLowerCase();
-    const email = (student.email || "").toLowerCase();
-    const matric = (student.matricNo || "").toLowerCase();
-    const courseCode = (course.code || "").toLowerCase();
-    const courseTitle = (course.title || "").toLowerCase();
+    const code = (course.code || "").toLowerCase();
+    const title = (course.title || "").toLowerCase();
     const query = searchQuery.toLowerCase();
 
-    const matchesSearch =
-      name.includes(query) ||
-      email.includes(query) ||
-      matric.includes(query) ||
-      courseCode.includes(query) ||
-      courseTitle.includes(query);
+    const matchesSearch = code.includes(query) || title.includes(query);
 
     let matchesDate = true;
     if (dateFilter) {
@@ -41,7 +31,7 @@ export function RosterTable({ records, showCourse = false }) {
 
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
   const currentPageSafe = Math.min(Math.max(currentPage, 1), totalPages || 1);
-  
+
   const indexOfLastItem = currentPageSafe * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filtered.slice(indexOfFirstItem, indexOfLastItem);
@@ -61,12 +51,12 @@ export function RosterTable({ records, showCourse = false }) {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-xl border border-zinc-200/40 dark:border-zinc-800/40 bg-zinc-50/50 dark:bg-zinc-950/50">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1 max-w-2xl">
           <div>
-            <label htmlFor="search" className="block text-[10px] uppercase font-bold text-zinc-400 mb-1.5">Search Students</label>
+            <label htmlFor="search" className="block text-[10px] uppercase font-bold text-zinc-400 mb-1.5">Search Courses</label>
             <input
               id="search"
               type="text"
               className="w-full px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs text-zinc-900 dark:text-white focus:outline-none focus:border-zinc-500 transition"
-              placeholder={showCourse ? "Search by name, matric, course..." : "Search by name, email, matric..."}
+              placeholder="Search by code or title..."
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
@@ -98,7 +88,6 @@ export function RosterTable({ records, showCourse = false }) {
               Clear
             </button>
           )}
-          <ExportButton records={filtered} courseName="Filtered_Register" />
         </div>
       </div>
 
@@ -106,38 +95,26 @@ export function RosterTable({ records, showCourse = false }) {
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="border-b border-zinc-200 dark:border-zinc-800 text-zinc-400 font-semibold">
-              {showCourse && <th className="pb-3 pr-4">Course</th>}
-              <th className={`pb-3 ${showCourse ? "px-4" : "pr-4"}`}>Student Name</th>
-              <th className="pb-3 px-4">Matric Number</th>
-              <th className="pb-3 px-4">Student Email</th>
+              <th className="pb-3 pr-4">Course Code</th>
+              <th className="pb-3 px-4">Course Title</th>
               <th className="pb-3 pl-4">Date & Time Marked</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-150 dark:divide-zinc-850">
             {currentItems.length === 0 ? (
               <tr>
-                <td colSpan={showCourse ? 5 : 4} className="py-8 text-center text-xs text-zinc-500">
-                  No matching student records found.
+                <td colSpan={3} className="py-8 text-center text-xs text-zinc-500">
+                  No matching attendance logs found.
                 </td>
               </tr>
             ) : (
               currentItems.map((record) => (
                 <tr key={record._id.toString()} className="text-zinc-800 dark:text-zinc-200">
-                  {showCourse && (
-                    <td className="py-4 pr-4">
-                      <span className="inline-flex items-center rounded bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 text-[10px] font-mono font-semibold text-zinc-750 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700">
-                        {record.courseId?.code || "N/A"}
-                      </span>
-                    </td>
-                  )}
-                  <td className={`py-4 ${showCourse ? "px-4" : "pr-4"} font-semibold text-zinc-950 dark:text-white`}>
-                    {record.studentId?.name || "Unknown Student"}
+                  <td className="py-4 pr-4 font-semibold text-zinc-905 dark:text-zinc-100 font-mono text-xs">
+                    {record.courseId?.code || "N/A"}
                   </td>
-                  <td className="py-4 px-4 font-mono text-xs text-zinc-900 dark:text-zinc-100">
-                    {record.studentId?.matricNo || "N/A"}
-                  </td>
-                  <td className="py-4 px-4 font-medium text-zinc-500 dark:text-zinc-400">
-                    {record.studentId?.email || "N/A"}
+                  <td className="py-4 px-4 font-medium">
+                    {record.courseId?.title || "Unknown Course"}
                   </td>
                   <td className="py-4 pl-4 text-zinc-500 dark:text-zinc-400 text-xs">
                     {new Date(record.markedAt).toLocaleDateString()} at{" "}

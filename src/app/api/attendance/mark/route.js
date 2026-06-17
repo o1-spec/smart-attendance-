@@ -75,6 +75,24 @@ export async function POST(request) {
       );
     }
 
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
+
+    const existingDayRecord = await AttendanceRecord.findOne({
+      studentId: user._id,
+      courseId: session.courseId,
+      markedAt: { $gte: todayStart, $lte: todayEnd },
+    });
+
+    if (existingDayRecord) {
+      return NextResponse.json(
+        { error: 'Bad Request: You have already marked attendance for this course today' },
+        { status: 400 }
+      );
+    }
+
     const record = await AttendanceRecord.create({
       studentId: user._id,
       courseId: session.courseId,

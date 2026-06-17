@@ -4,7 +4,7 @@ import AttendanceRecord from '@/models/AttendanceRecord';
 import Course from '@/models/Course';
 import AttendanceSession from '@/models/AttendanceSession';
 import { getSessionUser } from '@/lib/auth';
-import { StudentNavbar } from './components';
+import { StudentNavbar, StudentHistoryTable } from './components';
 
 export const dynamic = 'force-dynamic';
 
@@ -110,33 +110,7 @@ export default async function StudentDashboardPage() {
                   </p>
                 </div>
               ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-sm">
-                    <thead>
-                      <tr className="border-b border-zinc-200 dark:border-zinc-800 text-zinc-400 font-semibold">
-                        <th className="pb-3 pr-4">Course Code</th>
-                        <th className="pb-3 px-4">Course Title</th>
-                        <th className="pb-3 pl-4">Date & Time Marked</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-zinc-150 dark:divide-zinc-850">
-                      {records.map((record) => (
-                        <tr key={record._id.toString()} className="text-zinc-800 dark:text-zinc-200">
-                          <td className="py-4 pr-4 font-semibold text-zinc-905 dark:text-zinc-100">
-                            {record.courseId?.code || 'N/A'}
-                          </td>
-                          <td className="py-4 px-4 font-medium">
-                            {record.courseId?.title || 'Unknown Course'}
-                          </td>
-                          <td className="py-4 pl-4 text-zinc-500 dark:text-zinc-400 text-xs">
-                            {new Date(record.markedAt).toLocaleDateString()} at{' '}
-                            {new Date(record.markedAt).toLocaleTimeString()}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                <StudentHistoryTable records={JSON.parse(JSON.stringify(records))} />
               )}
             </div>
           </div>

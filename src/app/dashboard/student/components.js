@@ -85,3 +85,5 @@ export function StudentNavbar({ userName, userEmail }) {
   );
 }
 
+export { StudentHistoryTable } from "./components/StudentHistoryTable";
+

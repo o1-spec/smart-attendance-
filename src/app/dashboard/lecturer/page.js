@@ -3,8 +3,9 @@ import dbConnect from '@/lib/mongodb';
 import Course from '@/models/Course';
 import AttendanceSession from '@/models/AttendanceSession';
 import AttendanceRecord from '@/models/AttendanceRecord';
+import User from '@/models/User';
 import { getSessionUser } from '@/lib/auth';
-import { LecturerNavbar, CourseCreationForm, CourseCard, SessionManagementList } from './components';
+import { LecturerNavbar, CourseCreationForm, CourseCard, SessionManagementList, RosterTable } from './components';
 
 export const dynamic = 'force-dynamic';
 
@@ -46,6 +47,19 @@ export default async function LecturerDashboardPage() {
     })
     .sort({ createdAt: -1 })
     .limit(10);
+
+  const records = await AttendanceRecord.find({ courseId: { $in: courseIds } })
+    .populate({
+      path: 'studentId',
+      model: User,
+      select: 'name email matricNo',
+    })
+    .populate({
+      path: 'courseId',
+      model: Course,
+      select: 'title code',
+    })
+    .sort({ markedAt: -1 });
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-black flex flex-col">
@@ -128,6 +142,27 @@ export default async function LecturerDashboardPage() {
             </div>
 
             <SessionManagementList sessions={JSON.parse(JSON.stringify(sessions))} />
+
+            <div className="rounded-2xl border border-zinc-200/40 dark:border-zinc-800/40 bg-white dark:bg-zinc-900 p-6 shadow-sm">
+              <h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-6">
+                All Course Check-ins
+              </h2>
+              {records.length === 0 ? (
+                <div className="rounded-xl border border-dashed border-zinc-200 dark:border-zinc-800 p-12 text-center bg-zinc-50/20 dark:bg-zinc-900/20">
+                  <svg className="mx-auto h-12 w-12 text-zinc-300 dark:text-zinc-700 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                  <h3 className="text-sm font-semibold text-zinc-900 dark:text-white mb-1">
+                    No check-ins registered yet
+                  </h3>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-455 max-w-xs mx-auto">
+                    Attendance logs will populate here as soon as students scan active sessions.
+                  </p>
+                </div>
+              ) : (
+                <RosterTable records={JSON.parse(JSON.stringify(records))} showCourse={true} />
+              )}
+            </div>
           </div>
         </div>
       </main>
