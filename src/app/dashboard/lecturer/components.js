@@ -90,6 +90,7 @@ export function CourseCreationForm() {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [code, setCode] = useState("");
+  const [description, setDescription] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
@@ -106,7 +107,7 @@ export function CourseCreationForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, code }),
+        body: JSON.stringify({ title, code, description }),
       });
 
       const data = await res.json();
@@ -118,6 +119,7 @@ export function CourseCreationForm() {
       setSuccess("Course created successfully!");
       setTitle("");
       setCode("");
+      setDescription("");
       router.refresh();
     } catch (err) {
       setError(err.message);
@@ -181,6 +183,23 @@ export function CourseCreationForm() {
           />
         </div>
 
+        <div>
+          <label
+            className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 mb-2 uppercase tracking-wider"
+            htmlFor="course-description"
+          >
+            Course Description
+          </label>
+          <textarea
+            id="course-description"
+            rows={3}
+            className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-white focus:outline-none focus:border-zinc-500 transition-all text-sm resize-none"
+            placeholder="Enter short description of the course module..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+
         <button
           type="submit"
           disabled={loading}
@@ -230,15 +249,20 @@ export function CourseCard({ course }) {
 
   return (
     <>
-      <div className="group rounded-2xl border border-zinc-200/40 dark:border-zinc-800/40 bg-white dark:bg-zinc-900 p-6 hover:shadow-lg dark:hover:shadow-none hover:border-purple-500/20 dark:hover:border-purple-500/20 transition-all">
+      <div className="group rounded-2xl border border-zinc-200/40 dark:border-zinc-800/40 bg-white dark:bg-zinc-900 p-6 hover:shadow-lg dark:hover:shadow-none hover:border-zinc-800 transition-all">
         <div className="flex justify-between items-start mb-4">
           <div>
-            <span className="inline-flex items-center rounded-lg bg-indigo-50 dark:bg-indigo-950/40 px-2.5 py-1 text-xs font-semibold text-indigo-700 dark:text-indigo-400 mb-2">
+            <span className="inline-flex items-center rounded bg-zinc-105 dark:bg-zinc-800 px-2.5 py-1 text-xs font-semibold text-zinc-900 dark:text-zinc-100 mb-2 border border-zinc-200 dark:border-zinc-700">
               {course.code}
             </span>
             <h4 className="text-lg font-bold text-zinc-900 dark:text-white line-clamp-1">
               {course.title}
             </h4>
+            {course.description && (
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 line-clamp-2 leading-relaxed">
+                {course.description}
+              </p>
+            )}
           </div>
         </div>
 
@@ -315,7 +339,7 @@ export function CourseCard({ course }) {
               </svg>
             </button>
 
-            <span className="inline-flex items-center rounded-lg bg-indigo-50 dark:bg-indigo-950/40 px-2.5 py-1 text-xs font-semibold text-indigo-700 dark:text-indigo-400 mb-2">
+            <span className="inline-flex items-center rounded bg-zinc-100 dark:bg-zinc-800 px-2.5 py-1 text-xs font-semibold text-zinc-900 dark:text-zinc-100 mb-2 border border-zinc-200 dark:border-zinc-700">
               {course.code}
             </span>
             <h3 className="text-xl font-bold text-zinc-900 dark:text-white mb-6">
@@ -330,7 +354,7 @@ export function CourseCard({ course }) {
               />
             </div>
 
-            <div className="mb-6 py-2 px-4 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs font-medium inline-flex items-center gap-1.5">
+            <div className="mb-6 py-2 px-4 rounded-full bg-zinc-900 border border-zinc-800 text-white text-xs font-medium inline-flex items-center gap-1.5">
               <svg
                 className="w-4 h-4 shrink-0"
                 fill="none"
@@ -362,7 +386,7 @@ export function CourseCard({ course }) {
                   href={sessionData.attendanceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs font-semibold text-purple-600 dark:text-purple-400 hover:underline break-all"
+                  className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 underline hover:no-underline break-all"
                 >
                   {sessionData.attendanceUrl}
                 </a>
@@ -374,3 +398,136 @@ export function CourseCard({ course }) {
     </>
   );
 }
+
+export function SessionManagementList({ sessions }) {
+  const router = useRouter();
+  const [deactivating, setDeactivating] = useState({});
+
+  const handleDeactivate = async (sessionId) => {
+    setDeactivating((prev) => ({ ...prev, [sessionId]: true }));
+    try {
+      const res = await fetch("/api/attendance/deactivate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ sessionId }),
+      });
+      if (res.ok) {
+        router.refresh();
+      }
+    } catch (err) {
+      console.error("Failed to deactivate session:", err);
+    } finally {
+      setDeactivating((prev) => ({ ...prev, [sessionId]: false }));
+    }
+  };
+
+  return (
+    <div className="rounded-2xl border border-zinc-200/40 dark:border-zinc-800/40 bg-white dark:bg-zinc-900 p-6 shadow-sm">
+      <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-6">
+        Generated Sessions
+      </h3>
+
+      {sessions.length === 0 ? (
+        <p className="text-sm text-zinc-500 dark:text-zinc-450 text-center py-4">
+          No generated sessions found.
+        </p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead>
+              <tr className="border-b border-zinc-200 dark:border-zinc-800 text-zinc-400 font-semibold uppercase tracking-wider">
+                <th className="pb-3 pr-4">Course</th>
+                <th className="pb-3 px-4">Code</th>
+                <th className="pb-3 px-4">Expires At</th>
+                <th className="pb-3 px-4 text-center">Status</th>
+                <th className="pb-3 pl-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-150 dark:divide-zinc-850">
+              {sessions.map((session) => {
+                const isExpired = new Date(session.expiresAt) < new Date();
+                const isActive = session.active && !isExpired;
+
+                return (
+                  <tr key={session._id} className="text-zinc-800 dark:text-zinc-200">
+                    <td className="py-3 pr-4 font-semibold text-zinc-955 dark:text-white">
+                      {session.courseId?.code || "N/A"}
+                    </td>
+                    <td className="py-3 px-4 font-mono">{session.code}</td>
+                    <td className="py-3 px-4 text-zinc-505 dark:text-zinc-400">
+                      {new Date(session.expiresAt).toLocaleTimeString()}
+                    </td>
+                    <td className="py-3 px-4 text-center">
+                      {isActive ? (
+                        <span className="inline-flex items-center rounded bg-black text-white border border-zinc-800 font-semibold px-2 py-0.5 text-[10px]">
+                          Active
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center rounded bg-zinc-950 text-zinc-500 px-2 py-0.5 text-[10px]">
+                          {session.active ? "Expired" : "Deactivated"}
+                        </span>
+                      )}
+                    </td>
+                    <td className="py-3 pl-4 text-right">
+                      {isActive && (
+                        <button
+                          onClick={() => handleDeactivate(session._id)}
+                          disabled={deactivating[session._id]}
+                          className="px-2.5 py-1 text-[10px] font-semibold text-white bg-black hover:bg-zinc-800 border border-zinc-800 rounded transition disabled:opacity-50"
+                        >
+                          {deactivating[session._id] ? "Deactivating..." : "Deactivate"}
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function ExportButton({ records, courseName }) {
+  const handleExport = () => {
+    if (!records || records.length === 0) return;
+
+    const headers = ["Student Name", "Student Email", "Marked Date", "Marked Time"];
+    const rows = records.map((record) => {
+      const dateObj = new Date(record.markedAt);
+      return [
+        record.studentId?.name || "Unknown Student",
+        record.studentId?.email || "N/A",
+        dateObj.toLocaleDateString(),
+        dateObj.toLocaleTimeString(),
+      ];
+    });
+
+    const csvContent =
+      "data:text/csv;charset=utf-8," +
+      [headers.join(","), ...rows.map((e) => e.map(val => `"${val.replace(/"/g, '""')}"`).join(","))].join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `attendance_${courseName.replace(/\s+/g, "_").toLowerCase()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  return (
+    <button
+      onClick={handleExport}
+      disabled={!records || records.length === 0}
+      className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-2 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition active:scale-[0.98] disabled:opacity-50"
+    >
+      Export CSV
+    </button>
+  );
+}
+

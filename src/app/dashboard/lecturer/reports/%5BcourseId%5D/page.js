@@ -5,6 +5,7 @@ import Course from "@/models/Course";
 import AttendanceRecord from "@/models/AttendanceRecord";
 import User from "@/models/User";
 import { getSessionUser } from "@/lib/auth";
+import { ExportButton } from "../../components";
 
 export const dynamic = "force-dynamic";
 
@@ -97,9 +98,12 @@ export default async function LecturerCourseReportPage({ params }) {
         </div>
 
         <div className="rounded-2xl border border-zinc-200/40 dark:border-zinc-800/40 bg-white dark:bg-zinc-900 p-6 shadow-sm">
-          <h2 className="text-xl font-bold text-zinc-900 dark:text-white mb-6">
-            Student Register List
-          </h2>
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-bold text-zinc-900 dark:text-white">
+              Student Register List
+            </h2>
+            <ExportButton records={JSON.parse(JSON.stringify(records))} courseName={course.title} />
+          </div>
 
           {records.length === 0 ? (
             <div className="rounded-xl border border-dashed border-zinc-200 dark:border-zinc-800 p-12 text-center bg-zinc-50/20 dark:bg-zinc-900/20">

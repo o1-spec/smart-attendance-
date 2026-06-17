@@ -14,6 +14,10 @@ const CourseSchema = new mongoose.Schema(
       uppercase: true,
       trim: true,
     },
+    description: {
+      type: String,
+      trim: true,
+    },
     lecturerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

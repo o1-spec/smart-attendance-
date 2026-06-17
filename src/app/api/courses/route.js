@@ -53,7 +53,7 @@ export async function POST(request) {
     }
 
     await dbConnect();
-    const { title, code } = await request.json();
+    const { title, code, description } = await request.json();
 
     if (!title || !code) {
       return NextResponse.json(
@@ -75,6 +75,7 @@ export async function POST(request) {
     const course = await Course.create({
       title: title.trim(),
       code: formattedCode,
+      description: description ? description.trim() : '',
       lecturerId: user._id,
     });
 
