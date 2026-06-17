@@ -5,7 +5,7 @@ import Course from "@/models/Course";
 import AttendanceRecord from "@/models/AttendanceRecord";
 import User from "@/models/User";
 import { getSessionUser } from "@/lib/auth";
-import { ExportButton } from "../../components";
+import { RosterTable } from "../../components";
 
 export const dynamic = "force-dynamic";
 
@@ -102,7 +102,6 @@ export default async function LecturerCourseReportPage({ params }) {
             <h2 className="text-xl font-bold text-zinc-900 dark:text-white">
               Student Register List
             </h2>
-            <ExportButton records={JSON.parse(JSON.stringify(records))} courseName={course.title} />
           </div>
 
           {records.length === 0 ? (
@@ -129,40 +128,7 @@ export default async function LecturerCourseReportPage({ params }) {
               </p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
-                <thead>
-                  <tr className="border-b border-zinc-200 dark:border-zinc-800 text-zinc-400 font-semibold">
-                    <th className="pb-3 pr-4">Student Name</th>
-                    <th className="pb-3 px-4">Matric Number</th>
-                    <th className="pb-3 px-4">Student Email</th>
-                    <th className="pb-3 pl-4">Date & Time Marked</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-150 dark:divide-zinc-850">
-                  {records.map((record) => (
-                    <tr
-                      key={record._id.toString()}
-                      className="text-zinc-800 dark:text-zinc-200"
-                    >
-                      <td className="py-4 pr-4 font-semibold text-zinc-955 dark:text-white">
-                        {record.studentId?.name || "Unknown Student"}
-                      </td>
-                      <td className="py-4 px-4 font-mono text-xs text-zinc-900 dark:text-zinc-100">
-                        {record.studentId?.matricNo || "N/A"}
-                      </td>
-                      <td className="py-4 px-4 font-medium text-zinc-500 dark:text-zinc-400">
-                        {record.studentId?.email || "N/A"}
-                      </td>
-                      <td className="py-4 pl-4 text-zinc-500 dark:text-zinc-400 text-xs">
-                        {new Date(record.markedAt).toLocaleDateString()} at{" "}
-                        {new Date(record.markedAt).toLocaleTimeString()}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <RosterTable records={JSON.parse(JSON.stringify(records))} />
           )}
         </div>
       </main>
